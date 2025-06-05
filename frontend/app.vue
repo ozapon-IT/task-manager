@@ -5,5 +5,17 @@
     </NuxtLayout>
   </div>
 </template>
-<script setup lang="ts">
-</script>
+
+<style>
+html, body {
+  scroll-behavior: smooth;
+}
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+html[data-theme="light"] {
+  color-scheme: light;
+}
+</style>

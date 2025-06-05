@@ -2,7 +2,7 @@
     <div class="navbar bg-base-200 shadow-md">
         <div class="navbar-start">
             <div class="dropdown">
-                <label tabindex="0" class="btn btn-ghost lg:hidden">
+                <label tabindex="0" class="btn btn-ghost lg:hidden light:hover:bg-gray-100/10 dark:hover:bg-gray-100/10 border-0">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -20,7 +20,7 @@
                     </li>
                 </ul>
             </div>
-            <NuxtLink to="/" class="btn btn-ghost normal-case text-xl">Task Manager</NuxtLink>
+            <NuxtLink to="/" class="btn btn-ghost normal-case text-xl light:hover:bg-gray-100/10 dark:hover:bg-gray-100/10 border-0">Task Manager</NuxtLink>
         </div>
         <div class="navbar-center hidden lg:flex">
             <ul class="menu menu-horizontal px-1">
@@ -35,7 +35,7 @@
         </div>
         <div class="navbar-end">
             <ClientOnly>
-                <button class="btn btn-ghost btn-circle" @click="toggleTheme">
+                <button class="btn btn-ghost btn-circle light:hover:bg-gray-100/10 dark:hover:bg-gray-100/10 border-0" @click="toggleTheme">
                     <svg v-if="isDark" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
