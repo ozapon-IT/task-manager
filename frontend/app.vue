@@ -18,4 +18,9 @@ html[data-theme="dark"] {
 html[data-theme="light"] {
   color-scheme: light;
 }
+
+.stat {
+  border-inline-end: none !important;
+  border-block-end: none !important;
+}
 </style>

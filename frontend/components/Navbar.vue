@@ -16,7 +16,7 @@
                     </li>
                     <li>
                         <!-- <NuxtLink to="/projects">Projects</NuxtLink> -->
-                        <NuxtLink to="#">Projects</NuxtLink>
+                        <a href="#">Projects</a>
                     </li>
                 </ul>
             </div>
@@ -29,7 +29,7 @@
                 </li>
                 <li>
                     <!-- <NuxtLink to="/projects">Projects</NuxtLink> -->
-                    <NuxtLink to="#">Projects</NuxtLink>
+                    <a href="#">Projects</a>
                 </li>
             </ul>
         </div>
