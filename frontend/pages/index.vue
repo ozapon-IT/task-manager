@@ -9,7 +9,7 @@
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
             <div class="stat bg-base-100 shadow-md rounded-box p-6">
-                <div class="stat-title mb-2">Active Projects</div>
+                <div class="stat-title mb-2 text-lg">Active Projects</div>
 
                 <div class="flex justify-between items-center gap-4 mb-2">
                     <div class="text-3xl font-bold text-warning">2</div>
@@ -27,7 +27,7 @@
             </div>
 
             <div class="stat bg-base-100 shadow-md rounded-box p-6">
-                <div class="stat-title mb-2">Total Tasks</div>
+                <div class="stat-title mb-2 text-lg">Total Tasks</div>
 
                 <div class="flex justify-between items-center gap-4 mb-2">
                     <div class="text-3xl font-bold text-success">6</div>
@@ -45,7 +45,7 @@
             </div>
 
             <div class="stat bg-base-100 shadow-md rounded-box p-6">
-                <div class="stat-title mb-2">Due Soon</div>
+                <div class="stat-title mb-2 text-lg">Due Soon</div>
 
                 <div class="flex justify-between items-center gap-4 mb-2">
                     <div class="text-3xl font-bold text-error">3</div>
