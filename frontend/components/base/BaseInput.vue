@@ -11,8 +11,8 @@
                 { 'input-error': error },
                 size ? `input-${size}` : '',
                 className
-            ]" @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)" @blur="$emit('blur', $event)"
-            @focus="$emit('focus', $event)" />
+            ]" @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
+            @blur="$emit('blur', $event)" @focus="$emit('focus', $event)" />
         <label v-if="error || helperText" class="label">
             <span :class="['label-text-alt', error ? 'text-error' : '']">
                 {{ error || helperText }}
@@ -39,7 +39,6 @@ const props = withDefaults(defineProps<{
     className?: string
 }>(), {
     modelValue: '',
-    id: () => `input-${Math.random().toString(36).substring(2, 9)}`,
     label: '',
     type: 'text',
     placeholder: '',
@@ -51,6 +50,18 @@ const props = withDefaults(defineProps<{
     helperText: '',
     className: ''
 });
+
+
+const internalId = ref('');
+
+onMounted(() => {
+    // SSR回避のため、クライアントでのみ生成
+    if (!props.id) {
+        internalId.value = `input-${Math.random().toString(36).substring(2, 9)}`;
+    }
+});
+
+const computedId = computed(() => props.id || internalId.value);
 
 defineEmits(['update:modelValue', 'blur', 'focus']);
 </script>

@@ -2,10 +2,10 @@
     <div>
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
             <div>
-                <h1 class="text-2xl font-bold">Projects</h1>
+                <h1 class="text-2xl font-bold dark:text-gray-400">Projects</h1>
                 <p class="text-sm opacity-70 mt-1">Manage and organize your projects</p>
             </div>
-            <BaseButton @click="openProjectModal" class="mt-3 md:mt-0">
+            <BaseButton @click="openProjectModal" class="mt-3 md:mt-0" class-name="bg-blue-500 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-700 text-gray-100 dark:text-gray-800 font-bold">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -25,7 +25,7 @@
                 </template>
             </BaseInput>
 
-            <select v-model="statusFilter" class="select select-bordered">
+            <select v-model="statusFilter" class="select select-bordered dark:text-gray-400">
                 <option value="all">All Statuses</option>
                 <option value="Active">Active</option>
                 <option value="On Hold">On Hold</option>
@@ -37,7 +37,7 @@
             <EmptyState :title="searchQuery || statusFilter !== 'all' ? 'No matching projects' : 'No projects yet'"
                 :description="searchQuery || statusFilter !== 'all' ? 'Try adjusting your filters' : 'Create your first project to get started'">
                 <template #action>
-                    <BaseButton @click="openProjectModal" v-if="!searchQuery && statusFilter === 'all'">
+                    <BaseButton @click="openProjectModal" v-if="!searchQuery && statusFilter === 'all'" class-name="bg-blue-500 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-700 text-gray-100 dark:text-gray-800 font-bold">
                         Create Project
                     </BaseButton>
                     <BaseButton @click="resetFilters" variant="secondary" v-else>
@@ -75,9 +75,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useProjectStore } from '~/stores/project';
 import { useTaskStore } from '~/stores/task';
+import BaseInput from '~/components/base/BaseInput.vue';
+import BaseButton from '~/components/base/BaseButton.vue';
+import EmptyState from '~/components/EmptyState.vue';
 
 const projectStore = useProjectStore();
 const taskStore = useTaskStore();
@@ -136,7 +139,11 @@ function saveProject(projectData: any) {
     if (selectedProject.value) {
         projectStore.updateProject(projectData);
     } else {
-        projectStore.addProject(projectData);
+        const newProject = {
+            ...projectData,
+            id: projectStore.generateId(),
+        };
+        projectStore.addProject(newProject);
     }
     closeProjectModal();
 }

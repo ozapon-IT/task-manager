@@ -1,11 +1,11 @@
 <template>
     <dialog :open="isOpen" class="modal modal-bottom sm:modal-middle">
         <div class="modal-box">
-            <h3 class="font-bold text-lg">{{ isEdit ? 'Edit Project' : 'Create New Project' }}</h3>
+            <h3 class="font-bold text-lg dark:text-gray-400">{{ isEdit ? 'Edit Project' : 'Create New Project' }}</h3>
             <form @submit.prevent="handleSubmit">
                 <div class="py-4">
                     <BaseInput v-model="form.title" label="Project Title" placeholder="Enter project title" required
-                        :error="errors.title" />
+                        :error="errors.title"/>
 
                     <div class="mt-4">
                         <label class="label">
@@ -31,8 +31,8 @@
                 </div>
 
                 <div class="modal-action">
-                    <button type="button" class="btn" @click="$emit('close')">Cancel</button>
-                    <button type="submit" class="btn btn-primary" :disabled="isSubmitting">
+                    <button type="button" class="btn bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-900 text-gray-800 dark:text-gray-400" @click="$emit('close')">Cancel</button>
+                    <button type="submit" class="btn bg-blue-500 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-700 text-gray-100 dark:text-gray-800 font-bold" :disabled="isSubmitting">
                         {{ isSubmitting ? 'Saving...' : (isEdit ? 'Update' : 'Create') }}
                     </button>
                 </div>
@@ -47,6 +47,7 @@
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted, watch } from 'vue';
 import type { Project } from '~/types/index.ts';
+import BaseInput from '~/components/base/BaseInput.vue';
 
 const props = withDefaults(defineProps<{
     isOpen: boolean;

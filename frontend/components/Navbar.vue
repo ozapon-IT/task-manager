@@ -15,8 +15,7 @@
                         <NuxtLink to="/">Dashboard</NuxtLink>
                     </li>
                     <li>
-                        <!-- <NuxtLink to="/projects">Projects</NuxtLink> -->
-                        <a href="#">Projects</a>
+                        <NuxtLink to="/projects">Projects</NuxtLink>
                     </li>
                 </ul>
             </div>
@@ -28,8 +27,7 @@
                     <NuxtLink to="/">Dashboard</NuxtLink>
                 </li>
                 <li>
-                    <!-- <NuxtLink to="/projects">Projects</NuxtLink> -->
-                    <a href="#">Projects</a>
+                    <NuxtLink to="/projects">Projects</NuxtLink>
                 </li>
             </ul>
         </div>

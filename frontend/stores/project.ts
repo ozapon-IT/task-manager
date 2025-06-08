@@ -12,12 +12,9 @@ export const useProjectStore = defineStore('project', () => {
     }
 
     // Actions
-    function addProject(projectData: Omit<Project, 'id' | 'createdAt'>) {
+    function addProject(projectData: Omit<Project, 'createdAt' | 'completed'>) {
         const newProject: Project = {
-            id: generateId(),
-            title: projectData.title,
-            description: projectData.description || '',
-            status: projectData.status || 'Active',
+            ...projectData,
             createdAt: new Date().toISOString(),
             completed: projectData.status === 'Completed'
         };
@@ -121,6 +118,7 @@ export const useProjectStore = defineStore('project', () => {
         addProject,
         updateProject,
         deleteProject,
-        initializeWithExamples
+        initializeWithExamples,
+        generateId,
     };
 });
