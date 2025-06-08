@@ -6,7 +6,7 @@
             <slot />
         </main>
 
-        <footer class="footer footer-center p-4 bg-base-300 text-base-content">
+        <footer class="footer footer-center p-4 bg-base-300 text-base-content dark:text-gray-400">
             <div>
                 <p>Copyright © {{ new Date().getFullYear() }} - Task Manager</p>
             </div>

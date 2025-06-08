@@ -2,7 +2,7 @@
     <div>
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
             <div>
-                <h1 class="text-2xl font-bold mb-2">Dashboard</h1>
+                <h1 class="text-2xl font-bold mb-2 dark:text-gray-400">Dashboard</h1>
                 <p class="text-sm opacity-70">Your task overview and summary</p>
             </div>
         </div>

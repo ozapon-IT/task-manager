@@ -9,7 +9,7 @@
                 </svg>
             </slot>
         </div>
-        <h3 class="text-lg font-medium text-base-content">{{ title }}</h3>
+        <h3 class="text-lg font-medium text-base-content dark:text-gray-400">{{ title }}</h3>
         <p class="mt-1 text-sm text-base-content opacity-70">{{ description }}</p>
         <div class="mt-6">
             <slot name="action"></slot>

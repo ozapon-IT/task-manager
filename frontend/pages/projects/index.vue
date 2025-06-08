@@ -25,7 +25,7 @@
                 </template>
             </BaseInput>
 
-            <select v-model="statusFilter" class="select select-bordered dark:text-gray-400">
+            <select v-model="statusFilter" class="select select-bordered w-auto dark:text-gray-400 focus:outline-gray-300 focus:outline-3 focus:border-gray-300 dark:focus:outline-gray-700 dark:focus:outline-3 dark:focus:border-gray-600">
                 <option value="all">All Statuses</option>
                 <option value="Active">Active</option>
                 <option value="On Hold">On Hold</option>
@@ -40,7 +40,7 @@
                     <BaseButton @click="openProjectModal" v-if="!searchQuery && statusFilter === 'all'" class-name="bg-blue-500 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-700 text-gray-100 dark:text-gray-800 font-bold">
                         Create Project
                     </BaseButton>
-                    <BaseButton @click="resetFilters" variant="secondary" v-else>
+                    <BaseButton @click="resetFilters" class-name="bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-900 text-gray-800 dark:text-gray-400" v-else>
                         Reset Filters
                     </BaseButton>
                 </template>

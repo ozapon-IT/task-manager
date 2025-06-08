@@ -1,5 +1,5 @@
 <template>
-    <dialog :open="isOpen" class="modal modal-bottom sm:modal-middle">
+    <dialog :open="isOpen" class="modal sm:modal-middle">
         <div class="modal-box">
             <h3 class="font-bold text-lg dark:text-gray-400">{{ isEdit ? 'Edit Project' : 'Create New Project' }}</h3>
             <form @submit.prevent="handleSubmit">
@@ -8,10 +8,10 @@
                         :error="errors.title"/>
 
                     <div class="mt-4">
-                        <label class="label">
+                        <label class="label mb-2">
                             <span class="label-text">Description</span>
                         </label>
-                        <textarea v-model="form.description" class="textarea textarea-bordered w-full"
+                        <textarea v-model="form.description" class="textarea textarea-bordered w-full focus:outline-gray-300 focus:outline-3 focus:border-gray-300 dark:focus:outline-gray-700 dark:focus:outline-3 dark:focus:border-gray-600 dark:placeholder-gray-600"
                             placeholder="Enter project description" rows="3"></textarea>
                         <label v-if="errors.description" class="label">
                             <span class="label-text-alt text-error">{{ errors.description }}</span>
@@ -19,10 +19,10 @@
                     </div>
 
                     <div class="mt-4">
-                        <label class="label">
+                        <label class="label mb-2">
                             <span class="label-text">Status</span>
                         </label>
-                        <select v-model="form.status" class="select select-bordered w-full">
+                        <select v-model="form.status" class="select select-bordered w-full focus:outline-gray-300 focus:outline-3 focus:border-gray-300 dark:focus:outline-gray-700 dark:focus:outline-3 dark:focus:border-gray-600">
                             <option value="Active">Active</option>
                             <option value="On Hold">On Hold</option>
                             <option value="Completed">Completed</option>

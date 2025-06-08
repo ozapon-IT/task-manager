@@ -1,15 +1,18 @@
 <template>
     <div class="form-control w-full">
-        <label v-if="label" class="label" :for="id">
+        <label v-if="label" class="label mb-2" :for="id">
             <span class="label-text">{{ label }}</span>
             <span v-if="required" class="text-error">*</span>
         </label>
         <input :id="id" :type="type" :value="modelValue" :placeholder="placeholder" :disabled="disabled"
             :required="required" :class="[
                 'input',
+                'w-full',
                 variant ? `input-${variant}` : 'input-bordered',
                 { 'input-error': error },
                 size ? `input-${size}` : '',
+                'focus:outline-gray-300 focus:outline-3 focus:border-gray-300 dark:focus:outline-gray-700 dark:focus:outline-3 dark:focus:border-gray-600',
+                'dark:placeholder-gray-600',
                 className
             ]" @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
             @blur="$emit('blur', $event)" @focus="$emit('focus', $event)" />
