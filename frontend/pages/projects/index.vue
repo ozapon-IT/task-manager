@@ -63,8 +63,8 @@
                     delete
                     all tasks associated with this project.</p>
                 <div class="modal-action">
-                    <button class="btn" @click="isDeleteConfirmOpen = false">Cancel</button>
-                    <button class="btn btn-error" @click="deleteProject">Delete</button>
+                    <button class="btn bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-900 text-gray-800 dark:text-gray-400" @click="isDeleteConfirmOpen = false">Cancel</button>
+                    <button class="btn btn-error text-gray-100 dark:text-gray-800 font-bold" @click="deleteProject">Delete</button>
                 </div>
             </div>
             <form method="dialog" class="modal-backdrop">

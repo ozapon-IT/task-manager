@@ -70,7 +70,7 @@ const statusClass = computed(() => {
         case 'completed':
             return 'badge-success';
         case 'on hold':
-            return 'badge-warning';
+            return 'badge-info';
         default:
             return 'badge-secondary';
     }
