@@ -107,8 +107,8 @@ function validateForm() {
     if (!form.title.trim()) {
         errors.title = 'Project title is required';
         isValid = false;
-    } else if (form.title.length < 3) {
-        errors.title = 'Project title must be at least 3 characters';
+    } else if (form.title.length > 100) {
+        errors.title = 'Project title must be less than 100 characters';
         isValid = false;
     }
 

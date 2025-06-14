@@ -9,6 +9,7 @@
 <style>
 html, body {
   scroll-behavior: smooth;
+  scrollbar-gutter: unset;
 }
 
 html[data-theme="dark"] {
