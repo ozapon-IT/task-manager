@@ -2,13 +2,13 @@
     <div class="card bg-base-100 shadow-sm mb-4 card-transition" :class="{ 'opacity-60': task.completed }">
         <div class="card-body p-5">
             <div class="flex items-start gap-4">
-                <input type="checkbox" :checked="task.completed" class="checkbox checkbox-primary mt-1"
+                <input type="checkbox" :checked="task.completed" class="checkbox checkbox-success"
                     @change="$emit('toggle-complete', task.id)" />
                 <div class="flex-1">
-                    <div class="flex justify-between items-start mb-3">
+                    <div class="flex justify-between items-start">
                         <h3 class="font-medium" :class="{ 'line-through': task.completed }">{{ task.title }}</h3>
                         <div class="dropdown dropdown-end">
-                            <label tabindex="0" class="btn btn-ghost btn-xs btn-circle">
+                            <label tabindex="0" class="btn btn-ghost btn-xs btn-circle dark:text-gray-400 light:hover:bg-gray-100/10 dark:hover:bg-gray-100/10 border-0">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
                                     stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -16,8 +16,8 @@
                                 </svg>
                             </label>
                             <ul tabindex="0"
-                                class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-40">
-                                <li><a @click.prevent="$emit('edit', task)">Edit</a></li>
+                                class="dropdown-content z-[1] menu p-2 shadow bg-base-200 rounded-box w-40">
+                                <li class="dark:text-gray-400"><a @click.prevent="$emit('edit', task)">Edit</a></li>
                                 <li><a @click.prevent="$emit('delete', task.id)" class="text-error">Delete</a></li>
                             </ul>
                         </div>
