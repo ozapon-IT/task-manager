@@ -25,13 +25,14 @@ export const useTaskStore = defineStore('task', () => {
             dueDate: taskData.dueDate || '',
             completed: taskData.completed || false,
             projectId: taskData.projectId,
-            createdAt: new Date().toISOString()
+            createdAt: new Date().toISOString(),
+            completedAt: taskData.completed ? new Date().toISOString() : undefined,
         };
 
         tasks.value.push(newTask);
 
         // Save to localStorage
-        saveToLocalStorage();
+        // saveToLocalStorage();
 
         return newTask;
     }
@@ -41,12 +42,15 @@ export const useTaskStore = defineStore('task', () => {
         if (index !== -1) {
             const updatedTask = {
                 ...tasks.value[index],
-                ...taskData
+                ...taskData,
+                completedAt: taskData.completed
+                    ? (taskData.completedAt || new Date().toISOString())
+                    : undefined
             };
             tasks.value[index] = updatedTask;
 
             // Save to localStorage
-            saveToLocalStorage();
+            // saveToLocalStorage();
 
             return updatedTask;
         }
@@ -57,16 +61,17 @@ export const useTaskStore = defineStore('task', () => {
         tasks.value = tasks.value.filter(task => task.id !== id);
 
         // Save to localStorage
-        saveToLocalStorage();
+        // saveToLocalStorage();
     }
 
     function toggleTaskComplete(id: string) {
         const task = tasks.value.find(t => t.id === id);
         if (task) {
             task.completed = !task.completed;
+            task.completedAt = task.completed ? new Date().toISOString() : undefined;
 
             // Save to localStorage
-            saveToLocalStorage();
+            // saveToLocalStorage();
         }
     }
 
@@ -82,7 +87,8 @@ export const useTaskStore = defineStore('task', () => {
                     dueDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString(), // 2 days from now
                     completed: false,
                     projectId: 'p1',
-                    createdAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString()
+                    createdAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+                    completedAt: undefined,
                 },
                 {
                     id: 't2',
@@ -92,7 +98,8 @@ export const useTaskStore = defineStore('task', () => {
                     dueDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(), // 5 days from now
                     completed: true,
                     projectId: 'p1',
-                    createdAt: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString()
+                    createdAt: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString(),
+                    completedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString()
                 },
                 {
                     id: 't3',
@@ -102,7 +109,8 @@ export const useTaskStore = defineStore('task', () => {
                     dueDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(), // 3 days from now
                     completed: false,
                     projectId: 'p1',
-                    createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()
+                    createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+                    completedAt: undefined
                 },
                 {
                     id: 't4',
@@ -112,7 +120,8 @@ export const useTaskStore = defineStore('task', () => {
                     dueDate: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000).toISOString(), // 1 day from now
                     completed: false,
                     projectId: 'p2',
-                    createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString()
+                    createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+                    completedAt: undefined
                 },
                 {
                     id: 't5',
@@ -122,7 +131,8 @@ export const useTaskStore = defineStore('task', () => {
                     dueDate: new Date(Date.now() + 4 * 24 * 60 * 60 * 1000).toISOString(), // 4 days from now
                     completed: false,
                     projectId: 'p2',
-                    createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString()
+                    createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+                    completedAt: undefined
                 },
                 {
                     id: 't6',
@@ -132,12 +142,13 @@ export const useTaskStore = defineStore('task', () => {
                     dueDate: '',
                     completed: true,
                     projectId: 'p3',
-                    createdAt: new Date(Date.now() - 40 * 24 * 60 * 60 * 1000).toISOString()
+                    createdAt: new Date(Date.now() - 40 * 24 * 60 * 60 * 1000).toISOString(),
+                    completedAt:new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
                 }
             ];
 
             tasks.value = exampleTasks;
-            saveToLocalStorage();
+            // saveToLocalStorage();
         }
     }
 
@@ -146,25 +157,25 @@ export const useTaskStore = defineStore('task', () => {
         return 't' + Math.random().toString(36).substring(2, 9);
     }
 
-    function saveToLocalStorage() {
-        if (typeof window !== 'undefined') {
-            localStorage.setItem('taskManager_tasks', JSON.stringify(tasks.value));
-        }
-    }
+    // function saveToLocalStorage() {
+    //     if (typeof window !== 'undefined') {
+    //         localStorage.setItem('taskManager_tasks', JSON.stringify(tasks.value));
+    //     }
+    // }
 
-    function loadFromLocalStorage() {
-        if (typeof window !== 'undefined') {
-            const savedTasks = localStorage.getItem('taskManager_tasks');
-            if (savedTasks) {
-                tasks.value = JSON.parse(savedTasks);
-            }
-        }
-    }
+    // function loadFromLocalStorage() {
+    //     if (typeof window !== 'undefined') {
+    //         const savedTasks = localStorage.getItem('taskManager_tasks');
+    //         if (savedTasks) {
+    //             tasks.value = JSON.parse(savedTasks);
+    //         }
+    //     }
+    // }
 
     // Load data on store initialization
-    if (typeof window !== 'undefined') {
-        loadFromLocalStorage();
-    }
+    // if (typeof window !== 'undefined') {
+    //     loadFromLocalStorage();
+    // }
 
     return {
         tasks,
@@ -176,4 +187,6 @@ export const useTaskStore = defineStore('task', () => {
         toggleTaskComplete,
         initializeWithExamples
     };
+}, {
+    persist: true
 });

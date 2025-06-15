@@ -8,6 +8,8 @@ export interface Project {
     status: string;
     createdAt: string;
     completed: boolean;
+    startDate?: string;
+    endDate?: string;
 }
 
 export interface Task {
@@ -19,4 +21,7 @@ export interface Task {
     completed: boolean;
     projectId: string;
     createdAt: string;
+    startDate?: string;
+    endDate?: string;
+    completedAt?: string;
 }

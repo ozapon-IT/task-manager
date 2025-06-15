@@ -11,7 +11,8 @@
                         <label class="label">
                             <span class="label-text">Description</span>
                         </label>
-                        <textarea v-model="form.description" class="textarea textarea-bordered w-full focus:outline-gray-300 focus:outline-3 focus:border-gray-300 dark:focus:outline-gray-700 dark:focus:outline-3 dark:focus:border-gray-600 dark:placeholder-gray-600"
+                        <textarea v-model="form.description"
+                            class="textarea textarea-bordered w-full focus:outline-gray-300 focus:outline-3 focus:border-gray-300 dark:focus:outline-gray-700 dark:focus:outline-3 dark:focus:border-gray-600 dark:placeholder-gray-600"
                             placeholder="Enter task description" rows="2"></textarea>
                     </div>
 
@@ -20,7 +21,8 @@
                             <label class="label">
                                 <span class="label-text">Priority</span>
                             </label>
-                            <select v-model="form.priority" class="select select-bordered w-full focus:outline-gray-300 focus:outline-3 focus:border-gray-300 dark:focus:outline-gray-700 dark:focus:outline-3 dark:focus:border-gray-600">
+                            <select v-model="form.priority"
+                                class="select select-bordered w-full focus:outline-gray-300 focus:outline-3 focus:border-gray-300 dark:focus:outline-gray-700 dark:focus:outline-3 dark:focus:border-gray-600">
                                 <option value="Low">Low</option>
                                 <option value="Medium">Medium</option>
                                 <option value="High">High</option>
@@ -31,7 +33,8 @@
                             <label class="label">
                                 <span class="label-text">Due Date</span>
                             </label>
-                            <input v-model="form.dueDate" type="date" class="input input-bordered w-full focus:outline-gray-300 focus:outline-3 focus:border-gray-300 dark:focus:outline-gray-700 dark:focus:outline-3 dark:focus:border-gray-600" />
+                            <input v-model="form.dueDate" type="date"
+                                class="input input-bordered w-full focus:outline-gray-300 focus:outline-3 focus:border-gray-300 dark:focus:outline-gray-700 dark:focus:outline-3 dark:focus:border-gray-600" />
                         </div>
                     </div>
 
@@ -44,8 +47,12 @@
                 </div>
 
                 <div class="modal-action">
-                    <button type="button" class="btn bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-900 text-gray-800 dark:text-gray-400" @click="$emit('close')">Cancel</button>
-                    <button type="submit" class="btn bg-blue-500 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-700 text-gray-100 dark:text-gray-800 font-bold" :disabled="isSubmitting">
+                    <button type="button"
+                        class="btn bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-900 text-gray-800 dark:text-gray-400"
+                        @click="$emit('close')">Cancel</button>
+                    <button type="submit"
+                        class="btn bg-blue-500 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-700 text-gray-100 dark:text-gray-800 font-bold"
+                        :disabled="isSubmitting">
                         {{ isSubmitting ? 'Saving...' : (isEdit ? 'Update' : 'Create') }}
                     </button>
                 </div>
@@ -146,7 +153,10 @@ async function handleSubmit() {
         const taskData = {
             ...form,
             id: props.task?.id,
-            projectId: props.projectId
+            projectId: props.projectId,
+            completedAt: form.completed
+                ? (props.task?.completed ? props.task?.completedAt : new Date().toISOString())
+                : undefined
         };
 
         emit('save', taskData);

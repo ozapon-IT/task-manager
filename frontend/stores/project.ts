@@ -22,7 +22,7 @@ export const useProjectStore = defineStore('project', () => {
         projects.value.push(newProject);
 
         // Save to localStorage
-        saveToLocalStorage();
+        // saveToLocalStorage();
 
         return newProject;
     }
@@ -38,7 +38,7 @@ export const useProjectStore = defineStore('project', () => {
             projects.value[index] = updatedProject;
 
             // Save to localStorage
-            saveToLocalStorage();
+            // saveToLocalStorage();
 
             return updatedProject;
         }
@@ -49,7 +49,7 @@ export const useProjectStore = defineStore('project', () => {
         projects.value = projects.value.filter(project => project.id !== id);
 
         // Save to localStorage
-        saveToLocalStorage();
+        // saveToLocalStorage();
     }
 
     // Initialize with examples
@@ -61,6 +61,8 @@ export const useProjectStore = defineStore('project', () => {
                     title: 'Website Redesign',
                     description: 'Redesigning the company website with modern UI/UX principles',
                     status: 'Active',
+                    startDate: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
+                    endDate: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000).toISOString(),
                     createdAt: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(), // 15 days ago
                     completed: false
                 },
@@ -69,6 +71,8 @@ export const useProjectStore = defineStore('project', () => {
                     title: 'Mobile App Development',
                     description: 'Creating a cross-platform mobile application for our product',
                     status: 'Active',
+                    startDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+                    endDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
                     createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(), // 7 days ago
                     completed: false
                 },
@@ -77,13 +81,15 @@ export const useProjectStore = defineStore('project', () => {
                     title: 'Q1 Marketing Campaign',
                     description: 'Planning and executing the Q1 marketing strategy',
                     status: 'Completed',
+                    startDate: new Date(Date.now() - 45 * 24 * 60 * 60 * 1000).toISOString(),
+                    endDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
                     createdAt: new Date(Date.now() - 45 * 24 * 60 * 60 * 1000).toISOString(), // 45 days ago
                     completed: true
                 }
             ];
 
             projects.value = exampleProjects;
-            saveToLocalStorage();
+            // saveToLocalStorage();
         }
     }
 
@@ -92,25 +98,25 @@ export const useProjectStore = defineStore('project', () => {
         return 'p' + Math.random().toString(36).substring(2, 9);
     }
 
-    function saveToLocalStorage() {
-        if (typeof window !== 'undefined') {
-            localStorage.setItem('taskManager_projects', JSON.stringify(projects.value));
-        }
-    }
+    // function saveToLocalStorage() {
+    //     if (typeof window !== 'undefined') {
+    //         localStorage.setItem('taskManager_projects', JSON.stringify(projects.value));
+    //     }
+    // }
 
-    function loadFromLocalStorage() {
-        if (typeof window !== 'undefined') {
-            const savedProjects = localStorage.getItem('taskManager_projects');
-            if (savedProjects) {
-                projects.value = JSON.parse(savedProjects);
-            }
-        }
-    }
+    // function loadFromLocalStorage() {
+    //     if (typeof window !== 'undefined') {
+    //         const savedProjects = localStorage.getItem('taskManager_projects');
+    //         if (savedProjects) {
+    //             projects.value = JSON.parse(savedProjects);
+    //         }
+    //     }
+    // }
 
     // Load data on store initialization
-    if (typeof window !== 'undefined') {
-        loadFromLocalStorage();
-    }
+    // if (typeof window !== 'undefined') {
+    //     loadFromLocalStorage();
+    // }
 
     return {
         projects,
@@ -121,4 +127,6 @@ export const useProjectStore = defineStore('project', () => {
         initializeWithExamples,
         generateId,
     };
+}, {
+    persist: true
 });

@@ -11,14 +11,17 @@
                     <span>Project not found</span>
                 </div>
             </div>
-            <BaseButton @click="navigateTo('/projects')" class-name="mt-6 bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-900 text-gray-800 dark:text-gray-400">Back to Projects</BaseButton>
+            <BaseButton @click="navigateTo('/projects')"
+                class-name="mt-6 bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-900 text-gray-800 dark:text-gray-400">
+                Back to Projects</BaseButton>
         </div>
 
         <div v-else>
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
                 <div>
                     <div class="flex items-center gap-2">
-                        <NuxtLink to="/projects" class="btn btn-ghost btn-sm light:hover:bg-gray-100/10 dark:hover:bg-gray-100/10 border-0 dark:text-gray-400">
+                        <NuxtLink to="/projects"
+                            class="btn btn-ghost btn-sm light:hover:bg-gray-100/10 dark:hover:bg-gray-100/10 border-0 dark:text-gray-400">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -32,11 +35,12 @@
                         <div class="badge" :class="statusClass">{{ project.status }}</div>
                     </div>
                     <p class="text-sm opacity-70 mt-1">{{ project.description }}</p>
-                    <p class="text-xs mt-2">Created on {{ formatDate(project.createdAt) }}</p>
+                    <p class="text-xs mt-2">{{ formatDateRange(project.startDate, project.endDate) }}</p>
                 </div>
 
                 <div class="flex gap-2 items-start justify-end md:mt-0 mt-3">
-                    <BaseButton @click="openTaskModal" class-name="bg-blue-500 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-700 text-gray-100 dark:text-gray-800 font-bold">
+                    <BaseButton @click="openTaskModal"
+                        class-name="bg-blue-500 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-700 text-gray-100 dark:text-gray-800 font-bold">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -57,7 +61,8 @@
                     </template>
                 </BaseInput>
 
-                <select v-model="filterStatus" class="select select-bordered w-auto dark:text-gray-400 focus:outline-gray-300 focus:outline-3 focus:border-gray-300 dark:focus:outline-gray-700 dark:focus:outline-3 dark:focus:border-gray-600">
+                <select v-model="filterStatus"
+                    class="select select-bordered w-auto dark:text-gray-400 focus:outline-gray-300 focus:outline-3 focus:border-gray-300 dark:focus:outline-gray-700 dark:focus:outline-3 dark:focus:border-gray-600">
                     <option value="all">All</option>
                     <option value="active">Active</option>
                     <option value="completed">Completed</option>
@@ -68,10 +73,13 @@
                 <EmptyState :title="searchQuery || filterStatus !== 'all' ? 'No matching tasks' : 'No tasks yet'"
                     :description="searchQuery || filterStatus !== 'all' ? 'Try adjusting your filters' : 'Add your first task to this project'">
                     <template #action>
-                        <BaseButton @click="openTaskModal" v-if="!searchQuery && filterStatus === 'all'" class-name="bg-blue-500 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-700 text-gray-100 dark:text-gray-800 font-bold">
+                        <BaseButton @click="openTaskModal" v-if="!searchQuery && filterStatus === 'all'"
+                            class-name="bg-blue-500 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-700 text-gray-100 dark:text-gray-800 font-bold">
                             Add Task
                         </BaseButton>
-                        <BaseButton @click="resetFilters" class-name="bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-900 text-gray-800 dark:text-gray-400" v-else>
+                        <BaseButton @click="resetFilters"
+                            class-name="bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-900 text-gray-800 dark:text-gray-400"
+                            v-else>
                             Reset Filters
                         </BaseButton>
                     </template>
@@ -79,7 +87,7 @@
             </div>
 
             <div v-else>
-                <div class="grid grid-cols-1 gap-3">
+                <div class="grid grid-cols-1 gap-6">
                     <TaskItem v-for="task in filteredTasks" :key="task.id" :task="task"
                         @toggle-complete="toggleTaskComplete" @edit="openEditTaskModal" @delete="confirmDeleteTask" />
                 </div>
@@ -128,9 +136,10 @@
 import { ref, computed } from 'vue';
 import { useProjectStore } from '~/stores/project';
 import { useTaskStore } from '~/stores/task';
-import { formatDate } from '~/utils/date';
+import { formatDateRange } from '~/utils/date';
 import TaskItem from '~/components/TaskItem.vue';
 import TaskFormModal from '~/components/TaskFormModal.vue';
+import dayjs from 'dayjs';
 
 const route = useRoute();
 const projectId = route.params.id as string;
@@ -149,11 +158,11 @@ const statusClass = computed(() => {
 
     switch (project.value.status.toLowerCase()) {
         case 'active':
-            return 'badge-warning';
+            return 'badge-info';
         case 'completed':
             return 'badge-success';
         case 'on hold':
-            return 'badge-info';
+            return 'badge-warning';
         default:
             return 'badge-secondary';
     }
@@ -191,31 +200,32 @@ const filteredTasks = computed(() => {
             return matchesSearch && matchesStatus;
         })
         .sort((a, b) => {
-            // Sort by completion status first
             if (a.completed !== b.completed) {
                 return a.completed ? 1 : -1;
             }
 
-            // Then sort by priority
+            if (a.completed && b.completed) {
+                const completedA = a.completedAt ? dayjs(a.completedAt) : dayjs(0);
+                const completedB = b.completedAt ? dayjs(b.completedAt) : dayjs(0);
+                return completedB.diff(completedA);
+            }
+
             const priorityOrder = { 'High': 0, 'Medium': 1, 'Low': 2 };
-            const priorityA = priorityOrder[a.priority as keyof typeof priorityOrder] || 3;
-            const priorityB = priorityOrder[b.priority as keyof typeof priorityOrder] || 3;
+            const priorityA = priorityOrder[a.priority as keyof typeof priorityOrder] ?? 3;
+            const priorityB = priorityOrder[b.priority as keyof typeof priorityOrder] ?? 3;
 
             if (priorityA !== priorityB) {
                 return priorityA - priorityB;
             }
 
-            // Then by due date if available
-            if (a.dueDate && b.dueDate) {
-                return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
-            }
+            const dayA = a.dueDate ? dayjs(a.dueDate) : null;
+            const dayB = b.dueDate ? dayjs(b.dueDate) : null;
 
-            // Tasks with due dates come before those without
-            if (a.dueDate && !b.dueDate) return -1;
-            if (!a.dueDate && b.dueDate) return 1;
+            if (dayA && dayB) return dayA.diff(dayB);
+            if (dayA && !dayB) return -1;
+            if (!dayA && dayB) return 1;
 
-            // Finally sort by creation date
-            return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+            return dayjs(b.createdAt).diff(dayjs(a.createdAt));
         });
 });
 

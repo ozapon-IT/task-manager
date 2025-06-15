@@ -5,13 +5,14 @@
             <form @submit.prevent="handleSubmit" novalidate>
                 <div class="py-4">
                     <BaseInput v-model="form.title" label="Project Title" placeholder="Enter project title" required
-                        :error="errors.title"/>
+                        :error="errors.title" />
 
                     <div class="mt-4">
                         <label class="label mb-2">
                             <span class="label-text">Description</span>
                         </label>
-                        <textarea v-model="form.description" class="textarea textarea-bordered w-full focus:outline-gray-300 focus:outline-3 focus:border-gray-300 dark:focus:outline-gray-700 dark:focus:outline-3 dark:focus:border-gray-600 dark:placeholder-gray-600"
+                        <textarea v-model="form.description"
+                            class="textarea textarea-bordered w-full focus:outline-gray-300 focus:outline-3 focus:border-gray-300 dark:focus:outline-gray-700 dark:focus:outline-3 dark:focus:border-gray-600 dark:placeholder-gray-600"
                             placeholder="Enter project description" rows="3"></textarea>
                         <label v-if="errors.description" class="label">
                             <span class="label-text-alt text-error">{{ errors.description }}</span>
@@ -19,10 +20,18 @@
                     </div>
 
                     <div class="mt-4">
+                        <BaseDateRangePicker :start-date="form.startDate" :end-date="form.endDate"
+                            label="Project Duration"
+                            @update:start-date="form.startDate = $event" @update:end-date="form.endDate = $event"
+                            @validate="dateRangeValid = $event" />
+                    </div>
+
+                    <div class="mt-4">
                         <label class="label mb-2">
                             <span class="label-text">Status</span>
                         </label>
-                        <select v-model="form.status" class="select select-bordered w-full focus:outline-gray-300 focus:outline-3 focus:border-gray-300 dark:focus:outline-gray-700 dark:focus:outline-3 dark:focus:border-gray-600">
+                        <select v-model="form.status"
+                            class="select select-bordered w-full focus:outline-gray-300 focus:outline-3 focus:border-gray-300 dark:focus:outline-gray-700 dark:focus:outline-3 dark:focus:border-gray-600">
                             <option value="Active">Active</option>
                             <option value="On Hold">On Hold</option>
                             <option value="Completed">Completed</option>
@@ -31,8 +40,12 @@
                 </div>
 
                 <div class="modal-action">
-                    <button type="button" class="btn bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-900 text-gray-800 dark:text-gray-400" @click="$emit('close')">Cancel</button>
-                    <button type="submit" class="btn bg-blue-500 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-700 text-gray-100 dark:text-gray-800 font-bold" :disabled="isSubmitting">
+                    <button type="button"
+                        class="btn bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-900 text-gray-800 dark:text-gray-400"
+                        @click="$emit('close')">Cancel</button>
+                    <button type="submit"
+                        class="btn bg-blue-500 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-700 text-gray-100 dark:text-gray-800 font-bold"
+                        :disabled="isSubmitting || !dateRangeValid">
                         {{ isSubmitting ? 'Saving...' : (isEdit ? 'Update' : 'Create') }}
                     </button>
                 </div>
@@ -48,6 +61,7 @@
 import { ref, reactive, computed, onMounted, watch } from 'vue';
 import type { Project } from '~/types/index.ts';
 import BaseInput from '~/components/base/BaseInput.vue';
+import BaseDateRangePicker from './base/BaseDateRangePicker.vue';
 
 const props = withDefaults(defineProps<{
     isOpen: boolean;
@@ -60,11 +74,14 @@ const emit = defineEmits(['close', 'save']);
 
 const isEdit = computed(() => !!props.project);
 const isSubmitting = ref(false);
+const dateRangeValid = ref(true);
 
 const defaultForm = {
     title: '',
     description: '',
-    status: 'Active'
+    status: 'Active',
+    startDate: '',
+    endDate: '',
 };
 
 const form = reactive({ ...defaultForm });
@@ -78,6 +95,8 @@ watch(() => props.project, (newProject) => {
         form.title = newProject.title;
         form.description = newProject.description || '';
         form.status = newProject.status;
+        form.startDate = newProject.startDate || '';
+        form.endDate = newProject.endDate || '';
     } else {
         resetForm();
     }
@@ -94,6 +113,7 @@ function resetForm() {
     Object.keys(errors).forEach(key => {
         errors[key as keyof typeof errors] = '';
     });
+    dateRangeValid.value = true;
 }
 
 function validateForm() {
@@ -117,7 +137,7 @@ function validateForm() {
         isValid = false;
     }
 
-    return isValid;
+    return isValid && dateRangeValid.value;
 }
 
 async function handleSubmit() {
