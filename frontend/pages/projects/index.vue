@@ -33,25 +33,27 @@
             </select>
         </div>
 
-        <div v-if="filteredProjects.length === 0" class="mt-8">
-            <EmptyState :title="searchQuery || statusFilter !== 'all' ? 'No matching projects' : 'No projects yet'"
-                :description="searchQuery || statusFilter !== 'all' ? 'Try adjusting your filters' : 'Create your first project to get started'">
-                <template #action>
-                    <BaseButton @click="openProjectModal" v-if="!searchQuery && statusFilter === 'all'" class-name="bg-blue-500 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-700 text-gray-100 dark:text-gray-800 font-bold">
-                        Create Project
-                    </BaseButton>
-                    <BaseButton @click="resetFilters" class-name="bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-900 text-gray-800 dark:text-gray-400" v-else>
-                        Reset Filters
-                    </BaseButton>
-                </template>
-            </EmptyState>
-        </div>
+        <ClientOnly>
+            <div v-if="filteredProjects.length === 0" class="mt-8">
+                <EmptyState :title="searchQuery || statusFilter !== 'all' ? 'No matching projects' : 'No projects yet'"
+                    :description="searchQuery || statusFilter !== 'all' ? 'Try adjusting your filters' : 'Create your first project to get started'">
+                    <template #action>
+                        <BaseButton @click="openProjectModal" v-if="!searchQuery && statusFilter === 'all'" class-name="bg-blue-500 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-700 text-gray-100 dark:text-gray-800 font-bold">
+                            Create Project
+                        </BaseButton>
+                        <BaseButton @click="resetFilters" class-name="bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-900 text-gray-800 dark:text-gray-400" v-else>
+                            Reset Filters
+                        </BaseButton>
+                    </template>
+                </EmptyState>
+            </div>
 
-        <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <ProjectCard v-for="project in filteredProjects" :key="project.id" :project="project"
-                :tasks-count="getTasksCountForProject(project.id)" @view="navigateToProject"
-                @edit="openEditProjectModal" @delete="confirmDeleteProject" />
-        </div>
+            <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <ProjectCard v-for="project in filteredProjects" :key="project.id" :project="project"
+                    :tasks-count="getTasksCountForProject(project.id)" @view="navigateToProject"
+                    @edit="openEditProjectModal" @delete="confirmDeleteProject" />
+            </div>
+        </ClientOnly>
 
         <ProjectFormModal :is-open="isProjectModalOpen" :project="selectedProject" @close="closeProjectModal"
             @save="saveProject" />

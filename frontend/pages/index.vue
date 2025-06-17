@@ -7,116 +7,118 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-            <div class="stat bg-base-100 shadow-md rounded-box p-6">
-                <div class="stat-title mb-2 text-lg">Active Projects</div>
+        <ClientOnly>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <div class="stat bg-base-100 shadow-md rounded-box p-6">
+                    <div class="stat-title mb-2 text-lg">Active Projects</div>
 
-                <div class="flex justify-between items-center gap-4 mb-2">
-                    <div class="text-3xl font-bold text-info">{{ activeProjects }}</div>
+                    <div class="flex justify-between items-center gap-4 mb-2">
+                        <div class="text-3xl font-bold text-info">{{ activeProjects }}</div>
 
-                    <div class="text-info">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M13 10V3L4 14h7v7l9-11h-7z" />
-                        </svg>
+                        <div class="text-info">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="stat-desc">{{ completionRate }}% completion rate</div>
+                </div>
+
+                <div class="stat bg-base-100 shadow-md rounded-box p-6">
+                    <div class="stat-title mb-2 text-lg">Completed Tasks</div>
+
+                    <div class="flex justify-between items-center gap-4 mb-2">
+                        <div class="text-3xl font-bold text-success">{{ completedTasks }}</div>
+
+                        <div class="text-success">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="stat-desc">{{ totalTasks }} total tasks</div>
+                </div>
+
+                <div class="stat bg-base-100 shadow-md rounded-box p-6">
+                    <div class="stat-title mb-2 text-lg">Due Soon</div>
+
+                    <div class="flex justify-between items-center gap-4 mb-2">
+                        <div class="text-3xl font-bold text-error">{{ tasksDueSoon }}</div>
+
+                        <div class="text-error">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="stat-desc">Tasks due in the next 3 days</div>
+                </div>
+            </div>
+
+            <div class="divider mb-8">Recent Projects</div>
+
+            <div v-if="recentProjects.length === 0" class="mt-8">
+                <EmptyState title="No projects yet" description="Create your first project to get started">
+                    <template #action>
+                        <BaseButton @click="navigateTo('/projects')"
+                            class-name="bg-purple-500 dark:bg-purple-600 hover:bg-purple-600 dark:hover:bg-purple-700 text-gray-100 dark:text-gray-800">
+                            Go to Projects</BaseButton>
+                    </template>
+                </EmptyState>
+            </div>
+
+            <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+                <ProjectCard v-for="project in recentProjects" :key="project.id" :project="project"
+                    :tasks-count="getTasksCountForProject(project.id)" @view="navigateToProject"
+                    @edit="openEditProjectModal" @delete="confirmDeleteProject" />
+            </div>
+
+            <ProjectFormModal :is-open="isProjectModalOpen" :project="selectedProject" @close="closeProjectModal"
+                @save="saveProject" />
+
+            <dialog :open="isDeleteConfirmOpen" class="modal modal-bottom sm:modal-middle">
+                <div class="modal-box">
+                    <h3 class="font-bold text-lg">Confirm Delete</h3>
+                    <p class="py-4">Are you sure you want to delete this project? This action cannot be undone and will also
+                        delete
+                        all tasks associated with this project.</p>
+                    <div class="modal-action">
+                        <button
+                            class="btn bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-900 text-gray-800 dark:text-gray-400"
+                            @click="isDeleteConfirmOpen = false">Cancel</button>
+                        <button class="btn btn-error text-gray-100 dark:text-gray-800 font-bold"
+                            @click="deleteProject">Delete</button>
                     </div>
                 </div>
+                <form method="dialog" class="modal-backdrop">
+                    <button @click="isDeleteConfirmOpen = false">close</button>
+                </form>
+            </dialog>
 
-                <div class="stat-desc">{{ completionRate }}% completion rate</div>
+            <div class="divider mb-8">Tasks Due Soon</div>
+
+            <div v-if="tasksForDashboard.length === 0" class="mt-8">
+                <EmptyState title="No upcoming tasks" description="You're all caught up!" />
             </div>
-
-            <div class="stat bg-base-100 shadow-md rounded-box p-6">
-                <div class="stat-title mb-2 text-lg">Completed Tasks</div>
-
-                <div class="flex justify-between items-center gap-4 mb-2">
-                    <div class="text-3xl font-bold text-success">{{ completedTasks }}</div>
-
-                    <div class="text-success">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                        </svg>
-                    </div>
-                </div>
-
-                <div class="stat-desc">{{ totalTasks }} total tasks</div>
-            </div>
-
-            <div class="stat bg-base-100 shadow-md rounded-box p-6">
-                <div class="stat-title mb-2 text-lg">Due Soon</div>
-
-                <div class="flex justify-between items-center gap-4 mb-2">
-                    <div class="text-3xl font-bold text-error">{{ tasksDueSoon }}</div>
-
-                    <div class="text-error">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-                </div>
-
-                <div class="stat-desc">Tasks due in the next 3 days</div>
-            </div>
-        </div>
-
-        <div class="divider mb-8">Recent Projects</div>
-
-        <div v-if="recentProjects.length === 0" class="mt-8">
-            <EmptyState title="No projects yet" description="Create your first project to get started">
-                <template #action>
-                    <BaseButton @click="navigateTo('/projects')"
-                        class-name="bg-purple-500 dark:bg-purple-600 hover:bg-purple-600 dark:hover:bg-purple-700 text-gray-100 dark:text-gray-800">
-                        Go to Projects</BaseButton>
-                </template>
-            </EmptyState>
-        </div>
-
-        <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-            <ProjectCard v-for="project in recentProjects" :key="project.id" :project="project"
-                :tasks-count="getTasksCountForProject(project.id)" @view="navigateToProject"
-                @edit="openEditProjectModal" @delete="confirmDeleteProject" />
-        </div>
-
-        <ProjectFormModal :is-open="isProjectModalOpen" :project="selectedProject" @close="closeProjectModal"
-            @save="saveProject" />
-
-        <dialog :open="isDeleteConfirmOpen" class="modal modal-bottom sm:modal-middle">
-            <div class="modal-box">
-                <h3 class="font-bold text-lg">Confirm Delete</h3>
-                <p class="py-4">Are you sure you want to delete this project? This action cannot be undone and will also
-                    delete
-                    all tasks associated with this project.</p>
-                <div class="modal-action">
-                    <button
-                        class="btn bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-900 text-gray-800 dark:text-gray-400"
-                        @click="isDeleteConfirmOpen = false">Cancel</button>
-                    <button class="btn btn-error text-gray-100 dark:text-gray-800 font-bold"
-                        @click="deleteProject">Delete</button>
+            <div v-else class="mb-8">
+                <div v-for="task in tasksForDashboard" :key="task.id" class="mb-6">
+                    <TaskItem :task="task" @toggle-complete="toggleTaskComplete" @edit="openEditTaskModal"
+                        @delete="deleteTask" />
                 </div>
             </div>
-            <form method="dialog" class="modal-backdrop">
-                <button @click="isDeleteConfirmOpen = false">close</button>
-            </form>
-        </dialog>
 
-        <div class="divider mb-8">Tasks Due Soon</div>
-
-        <div v-if="tasksForDashboard.length === 0" class="mt-8">
-            <EmptyState title="No upcoming tasks" description="You're all caught up!" />
-        </div>
-        <div v-else class="mb-8">
-            <div v-for="task in tasksForDashboard" :key="task.id" class="mb-6">
-                <TaskItem :task="task" @toggle-complete="toggleTaskComplete" @edit="openEditTaskModal"
-                    @delete="deleteTask" />
-            </div>
-        </div>
-
-        <TaskFormModal :is-open="isTaskModalOpen" :project-id="selectedProjectId" :task="selectedTask"
-            @close="closeTaskModal" @save="saveTask" />
+            <TaskFormModal :is-open="isTaskModalOpen" :project-id="selectedProjectId" :task="selectedTask"
+                @close="closeTaskModal" @save="saveTask" />
+        </ClientOnly>
     </div>
 </template>
 <script setup lang="ts">

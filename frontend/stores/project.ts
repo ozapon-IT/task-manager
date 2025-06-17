@@ -128,5 +128,10 @@ export const useProjectStore = defineStore('project', () => {
         generateId,
     };
 }, {
-    persist: true
+    persist: typeof window !== 'undefined'
+        ? {
+            key: 'taskManager_projects',
+            storage: window.localStorage
+        } as any
+        : false
 });

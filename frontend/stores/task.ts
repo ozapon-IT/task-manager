@@ -188,5 +188,10 @@ export const useTaskStore = defineStore('task', () => {
         initializeWithExamples
     };
 }, {
-    persist: true
+    persist: typeof window !== 'undefined'
+        ? {
+            key: 'taskManager_tasks',
+            storage: window.localStorage
+        } as any
+        : false
 });
