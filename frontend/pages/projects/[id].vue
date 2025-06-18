@@ -100,7 +100,7 @@
                 <ProjectFormModal :is-open="isProjectModalOpen" :project="project" @close="closeProjectModal"
                     @save="saveProject" />
 
-                <dialog :open="isDeleteProjectConfirmOpen" class="modal modal-bottom sm:modal-middle">
+                <dialog :open="isDeleteProjectConfirmOpen" class="modal modal-middle">
                     <div class="modal-box">
                         <h3 class="font-bold text-lg">Confirm Delete Project</h3>
                         <p class="py-4">Are you sure you want to delete this project? This action cannot be undone and will
@@ -116,7 +116,7 @@
                     </form>
                 </dialog>
 
-                <dialog :open="isDeleteTaskConfirmOpen" class="modal modal-bottom sm:modal-middle">
+                <dialog :open="isDeleteTaskConfirmOpen" class="modal modal-middle">
                     <div class="modal-box">
                         <h3 class="font-bold text-lg">Confirm Delete Task</h3>
                         <p class="py-4">Are you sure you want to delete this task? This action cannot be undone.</p>

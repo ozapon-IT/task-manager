@@ -1,5 +1,5 @@
 <template>
-    <dialog :open="isOpen" class="modal modal-bottom sm:modal-middle">
+    <dialog :open="isOpen" class="modal modal-middle">
         <div class="modal-box">
             <h3 class="font-bold text-lg">{{ isEdit ? 'Edit Task' : 'Create New Task' }}</h3>
             <form @submit.prevent="handleSubmit" novalidate>

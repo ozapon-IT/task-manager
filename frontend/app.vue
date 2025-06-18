@@ -9,7 +9,6 @@
 <style>
 html, body {
   scroll-behavior: smooth;
-  scrollbar-gutter: unset;
 }
 
 html[data-theme="dark"] {
@@ -18,6 +17,10 @@ html[data-theme="dark"] {
 
 html[data-theme="light"] {
   color-scheme: light;
+}
+
+dialog[open] {
+  scrollbar-gutter: unset;
 }
 
 .stat {

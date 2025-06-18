@@ -58,7 +58,7 @@
         <ProjectFormModal :is-open="isProjectModalOpen" :project="selectedProject" @close="closeProjectModal"
             @save="saveProject" />
 
-        <dialog :open="isDeleteConfirmOpen" class="modal modal-bottom sm:modal-middle">
+        <dialog :open="isDeleteConfirmOpen" class="modal modal-middle">
             <div class="modal-box">
                 <h3 class="font-bold text-lg">Confirm Delete</h3>
                 <p class="py-4">Are you sure you want to delete this project? This action cannot be undone and will also
